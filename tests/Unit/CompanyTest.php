@@ -55,4 +55,17 @@ class CompanyTest extends TestCase
 
         $this->assertDatabaseMissing('companies', $company->toArray());
     }
+
+    public function testHasEmployees(): void
+    {
+        $company = Company::factory()
+            ->hasEmployees(10)
+            ->create();
+
+        $this->assertDatabaseHas('companies', $company->toArray());
+
+        $this->assertCount(10, $company->employees);
+
+        $this->assertDatabaseCount('employees', 10);
+    }
 }
