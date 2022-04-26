@@ -2,30 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\IndexCompanyRequest;
 use App\Http\Requests\StoreCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
 use App\Models\Company;
+use Illuminate\View\View;
 
 class CompanyController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(IndexCompanyRequest $request): View
     {
-        //
+        $companies = Company::paginate(10)->withQueryString();
+
+        return view('pages.companies.index', ['companies' => $companies]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function create(): View
     {
-        //
+        return view('pages.companies.create');
     }
 
     /**
@@ -47,7 +41,7 @@ class CompanyController extends Controller
      */
     public function show(Company $company)
     {
-        //
+        return view('pages.companies.show', ['company' => $company]);
     }
 
     /**

@@ -13,7 +13,7 @@ class CompanyEmployeeSeeder extends Seeder
     public function run(): void
     {
         Company::factory()
-            ->count(10)
+            ->count(100)
             ->hasEmployees(10)
             ->create();
     }
