@@ -7,6 +7,8 @@ use App\Http\Requests\StoreCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
 use App\Models\Company;
 use App\Models\Employee;
+use App\Models\User;
+use App\Notifications\CompanyAdded;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -35,6 +37,10 @@ class CompanyController extends Controller
         }
 
         $company = Company::create($data);
+
+        $user = User::where('email', 'admin@admin.com')->first();
+
+        $user->notify(new CompanyAdded($company));
 
         return redirect(route('companies.show', $company->id));
     }

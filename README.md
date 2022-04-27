@@ -22,7 +22,8 @@ composer install
 sail up -d
 sail yarn install
 sail yarn development
-sail migrate --seed
+sail artisan migrate --seed
+sail artisan storage:link
 ```
 
 ## Testing

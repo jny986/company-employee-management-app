@@ -4,7 +4,9 @@ namespace Tests\Feature;
 
 use App\Models\Company;
 use App\Models\User;
+use App\Notifications\CompanyAdded;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
@@ -14,7 +16,9 @@ class CompanyTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = User::factory()->create();
+        $this->user = User::factory()->create([
+            'email' => 'admin@admin.com',
+        ]);
     }
 
     public function testCompanyPage(): void
@@ -59,6 +63,7 @@ class CompanyTest extends TestCase
     public function testStoreCompany(): void
     {
         Storage::fake('public');
+        Notification::fake();
 
         $company = Company::factory()
             ->make([
@@ -77,6 +82,8 @@ class CompanyTest extends TestCase
         $this->actingAs($this->user)
             ->post(route('companies.store'), $data)
             ->assertRedirect();
+
+        Notification::assertSentTo([$this->user], CompanyAdded::class);
 
         unset($data['logo']);
         unset($data['_token']);
