@@ -14,7 +14,7 @@ class CompanyEmployeeSeeder extends Seeder
     {
         Company::factory()
             ->count(100)
-            ->hasEmployees(10)
+            ->hasEmployees(20)
             ->create();
     }
 }

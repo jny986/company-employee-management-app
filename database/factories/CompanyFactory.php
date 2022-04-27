@@ -13,7 +13,7 @@ class CompanyFactory extends Factory
     {
         return [
             'name' => $this->faker->company(),
-            'email' => $this->faker->unique->safeEmail(),
+            'email' => $this->faker->unique->companyEmail(),
             'logo' => $this->faker->imageUrl(),
             'website' => $this->faker->url(),
         ];
