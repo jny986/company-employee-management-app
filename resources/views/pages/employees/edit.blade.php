@@ -1,11 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __("Edit Company - $company->name") }}
+            {{ __("Edit Employee - $employee->first_name $employee->last_name") }}
         </h2>
     </x-slot>
     <div class="flex justify-end pt-4">
-        <form action="{{ route('companies.destroy', $company->id) }}" method="post">
+        <form action="{{ route('employees.destroy', $employee->id) }}" method="post">
             @csrf
             @method('delete')
             <button type="submit"
@@ -14,6 +14,6 @@
             </button>
         </form>
     </div>
-    <x-company-form :company="$company" action="{{ route('companies.update', $company->id) }}"
+    <x-employee-form :employee="$employee" :companies="$companies" action="{{ route('companies.update', $employee->id) }}"
         enctype="multipart/form-data" />
 </x-app-layout>

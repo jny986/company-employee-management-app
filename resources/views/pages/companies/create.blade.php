@@ -4,6 +4,5 @@
             {{ __('Create Company') }}
         </h2>
     </x-slot>
-    <x-company-form :company="$company" method="post" action="{{ route('companies.store') }}"
-        enctype="multipart/form-data" />
+    <x-company-form :company="$company" action="{{ route('companies.store') }}" enctype="multipart/form-data" />
 </x-app-layout>

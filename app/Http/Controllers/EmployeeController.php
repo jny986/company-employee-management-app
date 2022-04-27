@@ -4,83 +4,69 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
+use App\Models\Company;
 use App\Models\Employee;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class EmployeeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(): View
     {
-        //
+        $employees = Employee::with('company')
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('pages.employees.index', ['employees' => $employees]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function create(): View
     {
-        //
+        $employee = Employee::make();
+
+        $companies = Company::select(['id', 'name'])->get();
+
+        return view('pages.employees.create', [
+            'employee' => $employee,
+            'companies' => $companies,
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreEmployeeRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreEmployeeRequest $request)
+    public function store(StoreEmployeeRequest $request): RedirectResponse
     {
-        //
+        $employee = Employee::create($request->validated());
+
+        return redirect(route('employees.show', $employee->id));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Employee  $employee
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Employee $employee)
+    public function show(Employee $employee): View
     {
-        //
+        $employee->load(['company']);
+
+        return view('pages.employees.show', ['employee' => $employee]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Employee  $employee
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Employee $employee)
+    public function edit(Employee $employee): View
     {
-        //
+        $companies = Company::select(['id', 'name'])->get();
+
+        return view('pages.employees.edit', [
+            'employee' => $employee,
+            'companies' => $companies,
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateEmployeeRequest  $request
-     * @param  \App\Models\Employee  $employee
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateEmployeeRequest $request, Employee $employee)
+    public function update(UpdateEmployeeRequest $request, Employee $employee): RedirectResponse
     {
-        //
+        $employee->update($request->validated());
+
+        return redirect(route('employees.show', $employee->id));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Employee  $employee
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Employee $employee)
+    public function destroy(Employee $employee): RedirectResponse
     {
-        //
+        $employee->delete();
+
+        return redirect(route('employees.index'));
     }
 }

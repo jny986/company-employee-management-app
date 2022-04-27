@@ -271,7 +271,7 @@ class CompanyTest extends TestCase
         Storage::disk('public')->assertDirectoryEmpty('logos');
     }
 
-    public function testDeletCompany(): void
+    public function testDeleteCompany(): void
     {
         $deleteCompany = Company::factory()->create();
 

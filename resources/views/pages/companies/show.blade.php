@@ -22,7 +22,7 @@
     </div>
     <div class="w-full mb-4">
         <b>Website:</b>
-        <a href="{{ $company->email }}">{{ $company->email }}</a>
+        <a href="{{ $company->website }}">{{ $company->website }}</a>
     </div>
     <div class="w-full">
         <b class="justify-self-left">Logo: </b>
@@ -61,8 +61,7 @@
                                 </a>
                             </td>
                             <td>
-                                {{-- ToDo: Add link to Employees --}}
-                                <a href="">
+                                <a href="{{ route('employees.show', $employee->id) }}">
                                     <x-show-icon class="w-6 float-right" />
                                 </a>
                         </tr>

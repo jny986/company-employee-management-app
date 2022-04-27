@@ -1,8 +1,11 @@
 @props(['company'])
 
-<form {{ $attributes }}>
+<form {{ $attributes }} method="post">
     <div class="flex flex-row mb-4">
         @csrf
+        @if (!empty($company->id))
+            @method('patch')
+        @endif
         <input type="hidden" name="id" value="{{ $company->id }}" />
         <div class="basis-1/2 mr-2">
             <label for="name">Name:</label>
